@@ -1,4 +1,4 @@
-package com.autoscout24.gecloud.gaspedaal.exporter.logging
+package logging
 
 import com.typesafe.scalalogging.Logger
 import TypedLog.StringHelper
@@ -50,7 +50,7 @@ object TypedLog {
   }
 
   /**
-    * Extesion method: Extend regular logback logger
+    * Extension method: Extend regular logback logger
     */
   implicit class LoggerEnhancer(logger: Logger) {
 
