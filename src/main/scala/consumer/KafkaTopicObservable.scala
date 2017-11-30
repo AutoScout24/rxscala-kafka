@@ -4,13 +4,13 @@ import java.util
 import java.util.concurrent.ConcurrentHashMap
 
 import com.typesafe.scalalogging.LazyLogging
+import logging.TypedLog.{KafkaPartitionsAssigned, KafkaPartitionsRevoked, OffsetCommitFailed}
 import org.apache.kafka.clients.consumer.{ConsumerRebalanceListener, _}
 import org.apache.kafka.common.TopicPartition
 
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 import scala.collection.mutable
-import com.autoscout24.gecloud.gaspedaal.exporter.logging.TypedLog._
 import rx.lang.scala.Observable
 
 object KafkaTopicObservable {
