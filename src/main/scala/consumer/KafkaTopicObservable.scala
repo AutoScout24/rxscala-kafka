@@ -41,9 +41,10 @@ object KafkaTopicObservable {
     }
 
     def resetConsumerOffsets(): Unit = {
-      val partitions = consumer.partitionsFor(topic).asScala
+      val partitionInfoList = consumer.partitionsFor(topic).asScala
       val reset: util.Map[TopicPartition, OffsetAndMetadata] =
-        partitions.map(x => new TopicPartition(x.topic(), x.partition()) -> new OffsetAndMetadata(0)).toMap.asJava
+        partitionInfoList.map(partitionInfo =>
+          new TopicPartition(partitionInfo.topic(), partitionInfo.partition()) -> new OffsetAndMetadata(0)).toMap.asJava
 
       consumer.commitSync(reset)
     }
