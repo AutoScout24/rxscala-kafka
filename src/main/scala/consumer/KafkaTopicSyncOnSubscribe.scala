@@ -1,8 +1,8 @@
 package consumer
 
-import com.autoscout24.gecloud.gaspedaal.exporter.logging.TypedLog.{KafkaConsumerStarted, KafkaConsumerStopped}
 import com.typesafe.scalalogging.LazyLogging
 import consumer.KafkaTopicObservable.{KafkaRecord, KafkaTopicObservableState}
+import logging.TypedLog.{KafkaConsumerStarted, KafkaConsumerStopped}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.errors.WakeupException
 import rx.observables.SyncOnSubscribe
