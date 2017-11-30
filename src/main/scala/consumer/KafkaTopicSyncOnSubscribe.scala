@@ -10,7 +10,8 @@ import rx.observables.SyncOnSubscribe
 import scala.util.control.NonFatal
 
 class KafkaTopicSyncOnSubscribe(topic: String,
-                                createConsumer: () => KafkaConsumer[String, String], resetOffsets: Boolean = false)
+                                createConsumer: () => KafkaConsumer[String, String],
+                                resetOffsets: Boolean = false)
   extends SyncOnSubscribe[KafkaTopicObservableState, KafkaRecord] with LazyLogging {
   val minuteInMillis = 60000
 

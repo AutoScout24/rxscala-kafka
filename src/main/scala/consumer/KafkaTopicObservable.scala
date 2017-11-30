@@ -8,7 +8,6 @@ import logging.TypedLog.{KafkaPartitionsAssigned, KafkaPartitionsRevoked, Offset
 import org.apache.kafka.clients.consumer.{ConsumerRebalanceListener, _}
 import org.apache.kafka.common.TopicPartition
 
-import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 import rx.lang.scala.Observable
@@ -32,7 +31,7 @@ object KafkaTopicObservable {
   class KafkaTopicObservableState(val topic: String,
                                   val createConsumer: () => KafkaConsumer[String, String]) extends ConsumerRebalanceListener with LazyLogging {
 
-    private val offsetMap: mutable.Map[Int, Long] = new ConcurrentHashMap[Int, Long]()
+    private val offsetMap: mutable.Map[Int, Long] = new ConcurrentHashMap[Int, Long]().asScala
     private val recordsQueue: mutable.Queue[KafkaRecord] = mutable.Queue()
 
     private val consumer: KafkaConsumer[String, String] = {
@@ -42,7 +41,7 @@ object KafkaTopicObservable {
     }
 
     def resetConsumerOffsets(): Unit = {
-      val partitions = consumer.partitionsFor(topic)
+      val partitions = consumer.partitionsFor(topic).asScala
       val reset: util.Map[TopicPartition, OffsetAndMetadata] =
         partitions.map(x => new TopicPartition(x.topic(), x.partition()) -> new OffsetAndMetadata(0)).toMap.asJava
 
@@ -52,7 +51,7 @@ object KafkaTopicObservable {
     def pollRecord(timeoutInMs: Long): Option[KafkaRecord] = {
       if (recordsQueue.isEmpty) {
         flushOffsets()
-        val records = consumer.poll(timeoutInMs).map(r => new KafkaRecord(r, offsetMap)).toSeq
+        val records = consumer.poll(timeoutInMs).asScala.map(r => new KafkaRecord(r, offsetMap)).toSeq
         logger.debug(s"Received ${records.size} records from Kafka topic $topic")
         recordsQueue.enqueue(records: _*)
       }
@@ -78,7 +77,7 @@ object KafkaTopicObservable {
           case (partition, offset) => (new TopicPartition(topic, partition), new OffsetAndMetadata(offset + 1))
         }
         try {
-          consumer.commitSync(offsets)
+          consumer.commitSync(offsets.asJava)
           logger.debug(s"Committed ${offsets.size} offsets to Kafka topic $topic")
         } catch {
           case e: CommitFailedException =>

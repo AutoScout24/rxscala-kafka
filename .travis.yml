@@ -1,0 +1,35 @@
+language: scala
+
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.sbt"
+  - "$HOME/.ivy2"
+
+scala:
+- 2.12.4
+
+jdk:
+- oraclejdk8
+
+script:
+- sbt ++$TRAVIS_SCALA_VERSION clean coverage test package coverageReport
+- sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+# Trick to avoid unnecessary cache updates
+- find $HOME/.sbt -name "*.lock" | xargs rm
+
+notifications:
+  slack:
+    rooms:
+      - $SLACK_TOKEN
+    on_success: change
+    on_failure: always
+
+after_success:
+  - sbt ++$TRAVIS_SCALA_VERSION coveralls
+  - >
+    if [ "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_REPO_SLUG" = "AutoScout24/rxscala-kafka" ]; then
+      if [ "$TRAVIS_BRANCH" == "master" ] || [[ $TRAVIS_TAG ]]; then
+        ./publish-bintray-release.sh;
+      fi
+    fi

@@ -1,8 +1,9 @@
-
 name := "rxscala-kafka"
 organization := "com.autoscout24"
 organizationName := "AutoScout24"
 organizationHomepage := Some(url("https://www.autoscout24.de/"))
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+bintrayOrganization := Some("autoscout24")
 
 version := "0.1"
 
@@ -19,7 +20,6 @@ javaOptions in (ThisBuild, Test) ++= Seq(
 fork in Test := true
 
 val kafkaVersion = "0.10.1.1"
-val awsSdkVersion = "1.11.128"
 val sl4jVersion = "1.7.21"
 
 resolvers += Resolver.jcenterRepo
@@ -34,9 +34,5 @@ libraryDependencies ++= Seq(
   "io.reactivex" % "rxscala_2.11" % "0.26.2",
   "com.fasterxml.jackson.dataformat" % "jackson-dataformat-cbor" % "2.8.5",
   "org.eclipse.jetty" % "example-jetty-embedded" % "9.3.6.v20151106" exclude("org.eclipse.jetty.tests", "test-mock-resources"),
-  "org.apache.kafka" % "kafka-clients" % kafkaVersion,
+  "org.apache.kafka" % "kafka-clients" % kafkaVersion
 )
-
-// Publishing logic goes here
-lazy val publishSettings = Seq()
-        
