@@ -23,7 +23,7 @@ object KafkaTopicObservable {
 
     def offset: Long = record.offset()
 
-    def commit(): Unit = offsetMap.put(record.partition(), record.offset())
+    def commit(): Option[Long] = offsetMap.put(record.partition(), record.offset())
 
     def timestamp(): Long = record.timestamp()
   }
