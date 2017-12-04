@@ -23,9 +23,8 @@ val kafkaVersion = "0.10.1.1"
 val sl4jVersion = "1.7.21"
 
 val testDependencies = Seq(
-  "org.scalatest" %% "scalatest" % "3.0.0" % Test,
   "org.mockito" % "mockito-all" % "1.10.19" % Test,
-  "net.manub" %% "scalatest-embedded-kafka" % "1.0.0" % Test excludeAll(
+  "net.manub" %% "scalatest-embedded-kafka" % "0.11.0" % Test excludeAll(
     ExclusionRule(organization = "org.slf4j", name = "slf4j-log4j12"),
     ExclusionRule(organization = "log4j", name = "log4j"),
     ExclusionRule(organization = "org.apache.kafka")
@@ -48,5 +47,6 @@ libraryDependencies ++= Seq(
   "io.reactivex" % "rxscala_2.11" % "0.26.2",
   "com.fasterxml.jackson.dataformat" % "jackson-dataformat-cbor" % "2.8.5",
   "org.eclipse.jetty" % "example-jetty-embedded" % "9.3.6.v20151106" exclude("org.eclipse.jetty.tests", "test-mock-resources"),
+  "com.typesafe.play" %% "play-ws-standalone-json" % "1.1.2",
   "org.apache.kafka" % "kafka-clients" % kafkaVersion
 ) ++ testDependencies
