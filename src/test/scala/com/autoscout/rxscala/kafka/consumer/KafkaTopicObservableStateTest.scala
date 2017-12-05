@@ -1,10 +1,10 @@
-package com.autoscout.rxscala_kafka.consumer
+package com.autoscout.rxscala.kafka.consumer
 
-import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable.KafkaTopicObservableState
+import com.autoscout.rxscala.kafka.consumer.KafkaTopicObservable.KafkaTopicObservableState
 import org.apache.kafka.clients.consumer.{ConsumerRecord, ConsumerRecords, KafkaConsumer}
 import org.apache.kafka.common.TopicPartition
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{RETURNS_DEEP_STUBS, spy, times, verify, when}
+import org.mockito.Mockito.{RETURNS_DEEP_STUBS, times, verify, when}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{MustMatchers, WordSpec}
 

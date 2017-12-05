@@ -1,9 +1,9 @@
-package com.autoscout.rxscala_kafka.consumer
+package com.autoscout.rxscala.kafka.consumer
 
 import java.util
 import java.util.concurrent.ConcurrentHashMap
 
-import com.autoscout.rxscala_kafka.logging.TypedLog.{KafkaPartitionsAssigned, KafkaPartitionsRevoked, OffsetCommitFailed}
+import com.autoscout.rxscala.kafka.logging.TypedLog.{KafkaPartitionsAssigned, KafkaPartitionsRevoked, OffsetCommitFailed}
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.kafka.clients.consumer.{ConsumerRebalanceListener, _}
 import org.apache.kafka.common.TopicPartition

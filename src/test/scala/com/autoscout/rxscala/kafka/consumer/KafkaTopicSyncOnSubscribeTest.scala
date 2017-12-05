@@ -1,6 +1,6 @@
-package com.autoscout.rxscala_kafka.consumer
+package com.autoscout.rxscala.kafka.consumer
 
-import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable.{KafkaRecord, KafkaTopicObservableState}
+import com.autoscout.rxscala.kafka.consumer.KafkaTopicObservable.{KafkaRecord, KafkaTopicObservableState}
 import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 import org.apache.kafka.common.errors.WakeupException
 import org.mockito.Matchers.{eq => eqTo, _}
