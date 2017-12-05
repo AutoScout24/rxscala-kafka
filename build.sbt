@@ -5,7 +5,7 @@ organizationHomepage := Some(url("https://www.autoscout24.de/"))
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 bintrayOrganization := Some("autoscout24")
 
-version := "0.1"
+version := "1.0"
 
 scalaVersion := "2.12.4"
 
