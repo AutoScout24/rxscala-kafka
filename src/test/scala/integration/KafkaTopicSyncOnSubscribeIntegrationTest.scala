@@ -1,7 +1,7 @@
 package integration
 
-import consumer.KafkaTopicObservable
-import consumer.KafkaTopicObservable.KafkaRecord
+import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable
+import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable.KafkaRecord
 import integration.TestHelper._
 import net.manub.embeddedkafka.EmbeddedKafka
 import org.apache.kafka.clients.consumer.KafkaConsumer

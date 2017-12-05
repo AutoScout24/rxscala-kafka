@@ -1,4 +1,4 @@
-package logging
+package com.autoscout.rxscala_kafka.logging
 
 import com.typesafe.scalalogging.Logger
 import TypedLog.StringHelper

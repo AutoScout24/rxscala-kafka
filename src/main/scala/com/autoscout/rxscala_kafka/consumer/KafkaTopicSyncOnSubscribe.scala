@@ -1,8 +1,8 @@
-package consumer
+package com.autoscout.rxscala_kafka.consumer
 
+import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable.{KafkaRecord, KafkaTopicObservableState}
+import com.autoscout.rxscala_kafka.logging.TypedLog.{KafkaConsumerStarted, KafkaConsumerStopped}
 import com.typesafe.scalalogging.LazyLogging
-import consumer.KafkaTopicObservable.{KafkaRecord, KafkaTopicObservableState}
-import logging.TypedLog.{KafkaConsumerStarted, KafkaConsumerStopped}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.errors.WakeupException
 import rx.observables.SyncOnSubscribe

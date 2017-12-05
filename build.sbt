@@ -8,6 +8,7 @@ bintrayOrganization := Some("autoscout24")
 version := "1.0"
 
 scalaVersion := "2.12.4"
+crossScalaVersions := Seq("2.12.4", "2.11.7")
 
 scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
 
