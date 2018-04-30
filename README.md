@@ -2,7 +2,7 @@
 Library containing RxScala Observables to consume Kafka Topics
 
 ## Status
-[![Build Status](https://travis-ci.org/AutoScout24/rxscala-kafka.svg)](https://travis-ci.org/AutoScout24/rxscala-kafka)
+[![Build Status](https://travis-ci.org/Scout24/rxscala-kafka.svg)](https://travis-ci.org/AutoScout24/rxscala-kafka)
 
 [ ![Download](https://api.bintray.com/packages/autoscout24/maven/rxscala-kafka/images/download.svg) ](https://bintray.com/autoscout24/maven/rxscala-kafka/_latestVersion)
 
