@@ -1,11 +1,13 @@
+enablePlugins(GitVersioning)
+
+git.useGitDescribe := true
+
 name := "rxscala-kafka"
 organization := "com.autoscout24"
 organizationName := "AutoScout24"
 organizationHomepage := Some(url("https://www.autoscout24.de/"))
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 bintrayOrganization := Some("autoscout24")
-
-version := "1.0.1"
 
 scalaVersion := "2.12.6"
 crossScalaVersions := Seq("2.12.6", "2.11.12")
