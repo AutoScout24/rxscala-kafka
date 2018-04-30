@@ -10,14 +10,10 @@ version := "1.0"
 scalaVersion := "2.12.6"
 crossScalaVersions := Seq("2.12.6", "2.11.12")
 
-scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 
-javaOptions in(ThisBuild, Test) ++= Seq(
-  "-Dconfig.resource=test.conf",
-  "-Dlogback.configurationFile=as24local-logger.xml"
-)
 fork in Test := true
 
 val versions = new {
