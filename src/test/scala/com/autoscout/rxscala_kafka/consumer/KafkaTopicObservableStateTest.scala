@@ -3,7 +3,7 @@ package com.autoscout.rxscala_kafka.consumer
 import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable.KafkaTopicObservableState
 import org.apache.kafka.clients.consumer.{ConsumerRecord, ConsumerRecords, KafkaConsumer}
 import org.apache.kafka.common.TopicPartition
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{RETURNS_DEEP_STUBS, spy, times, verify, when}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{MustMatchers, WordSpec}

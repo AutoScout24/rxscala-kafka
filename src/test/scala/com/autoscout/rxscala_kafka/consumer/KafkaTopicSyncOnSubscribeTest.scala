@@ -3,7 +3,7 @@ package com.autoscout.rxscala_kafka.consumer
 import com.autoscout.rxscala_kafka.consumer.KafkaTopicObservable.{KafkaRecord, KafkaTopicObservableState}
 import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 import org.apache.kafka.common.errors.WakeupException
-import org.mockito.Matchers.{eq => eqTo, _}
+import org.mockito.ArgumentMatchers.{eq => eqTo, _}
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{MustMatchers, WordSpec}
