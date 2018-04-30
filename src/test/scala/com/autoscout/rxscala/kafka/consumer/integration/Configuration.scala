@@ -1,4 +1,4 @@
-package integration
+package com.autoscout.rxscala.kafka.consumer.integration
 
 import java.net.InetAddress
 import java.util.Properties

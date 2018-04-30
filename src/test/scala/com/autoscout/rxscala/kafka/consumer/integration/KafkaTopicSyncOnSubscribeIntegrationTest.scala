@@ -1,8 +1,8 @@
-package integration
+package com.autoscout.rxscala.kafka.consumer.integration
 
 import com.autoscout.rxscala.kafka.consumer.KafkaTopicObservable
 import com.autoscout.rxscala.kafka.consumer.KafkaTopicObservable.KafkaRecord
-import integration.TestHelper._
+import com.autoscout.rxscala.kafka.consumer.integration.TestHelper._
 import net.manub.embeddedkafka.EmbeddedKafka
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.scalatest.mockito.MockitoSugar

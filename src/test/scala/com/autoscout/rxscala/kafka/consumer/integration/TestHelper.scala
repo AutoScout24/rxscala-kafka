@@ -1,4 +1,4 @@
-package integration
+package com.autoscout.rxscala.kafka.consumer.integration
 
 import java.util.concurrent.TimeUnit
 
