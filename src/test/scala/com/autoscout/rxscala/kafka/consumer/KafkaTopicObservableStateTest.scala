@@ -1,10 +1,10 @@
 package com.autoscout.rxscala.kafka.consumer
 
 import com.autoscout.rxscala.kafka.consumer.KafkaTopicObservable.KafkaTopicObservableState
-import org.apache.kafka.clients.consumer.{ConsumerRecord, ConsumerRecords, KafkaConsumer}
+import org.apache.kafka.clients.consumer.{ConsumerRecord, ConsumerRecords, KafkaConsumer, OffsetAndMetadata}
 import org.apache.kafka.common.TopicPartition
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{RETURNS_DEEP_STUBS, times, verify, when}
+import org.mockito.Mockito.{RETURNS_DEEP_STUBS, times, verify, when, reset, never}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{MustMatchers, WordSpec}
 
@@ -49,5 +49,39 @@ class KafkaTopicObservableStateTest extends WordSpec with MustMatchers with Mock
       when(mockRecords.records(topic)).thenReturn(List(testConsumerRecord).asJava)
       kafkaTopicObservable.pollRecord(1) mustBe a[Some[_]]
     }
+
+    "commits records if interval not set after each chunk" in new TestFixture {
+      reset(mockConsumer)
+      val mockRecords = mock[ConsumerRecords[String, String]](RETURNS_DEEP_STUBS)
+      val testConsumerRecord = new ConsumerRecord[String, String](topic, 0, 0, "Test", "Test")
+      val consumerRecords = new ConsumerRecords[String, String](Map((new TopicPartition(topic, 0), List(testConsumerRecord).asJava)).asJava)
+
+      when(mockConsumer.poll(1)).thenReturn(consumerRecords)
+      when(mockRecords.records(topic)).thenReturn(List(testConsumerRecord).asJava)
+      kafkaTopicObservable.pollRecord(1).foreach(_.commit())
+      kafkaTopicObservable.pollRecord(1) mustBe a[Some[_]]
+      verify(mockConsumer).commitSync(Map(new TopicPartition(topic, 0) -> new OffsetAndMetadata(1)).asJava)
+    }
+
+    "commits records if interval is set after time interval" in new TestFixture {
+
+      reset(mockConsumer)
+      val kafkaTopicObservableWithTimebasedCommitStrategy = new KafkaTopicObservableState(topic, mockConsumerFunc, Option(30))
+      val mockRecords = mock[ConsumerRecords[String, String]](RETURNS_DEEP_STUBS)
+      val testConsumerRecord = new ConsumerRecord[String, String](topic, 0, 0, "Test", "Test")
+      val consumerRecords = new ConsumerRecords[String, String](Map((new TopicPartition(topic, 0), List(testConsumerRecord).asJava)).asJava)
+
+      when(mockConsumer.poll(1)).thenReturn(consumerRecords)
+      when(mockRecords.records(topic)).thenReturn(List(testConsumerRecord).asJava)
+
+      kafkaTopicObservableWithTimebasedCommitStrategy.pollRecord(1).foreach(_.commit())
+      kafkaTopicObservableWithTimebasedCommitStrategy.pollRecord(1)
+      verify(mockConsumer, never).commitSync(Map(new TopicPartition(topic, 0) -> new OffsetAndMetadata(1)).asJava)
+      Thread.sleep(100)
+      kafkaTopicObservableWithTimebasedCommitStrategy.pollRecord(1)
+      verify(mockConsumer).commitSync(Map(new TopicPartition(topic, 0) -> new OffsetAndMetadata(1)).asJava)
+    }
+
+
   }
 }

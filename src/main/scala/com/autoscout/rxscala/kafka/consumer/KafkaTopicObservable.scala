@@ -2,15 +2,16 @@ package com.autoscout.rxscala.kafka.consumer
 
 import java.util
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 
 import com.autoscout.rxscala.kafka.logging.TypedLog.{KafkaPartitionsAssigned, KafkaPartitionsRevoked, OffsetCommitFailed}
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.kafka.clients.consumer.{ConsumerRebalanceListener, _}
 import org.apache.kafka.common.TopicPartition
+import rx.lang.scala.Observable
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
-import rx.lang.scala.Observable
 
 object KafkaTopicObservable {
 
@@ -29,10 +30,11 @@ object KafkaTopicObservable {
   }
 
   class KafkaTopicObservableState(val topic: String,
-                                  val createConsumer: () => KafkaConsumer[String, String]) extends ConsumerRebalanceListener with LazyLogging {
+                                  val createConsumer: () => KafkaConsumer[String, String], val commitIntervalMs:Option[Int] = None) extends ConsumerRebalanceListener with LazyLogging {
 
     private val offsetMap: mutable.Map[Int, Long] = new ConcurrentHashMap[Int, Long]().asScala
     private val recordsQueue: mutable.Queue[KafkaRecord] = mutable.Queue()
+    private val lastCommitedAt = new AtomicLong(System.currentTimeMillis)
 
     private val consumer: KafkaConsumer[String, String] = {
       val kafkaConsumer = createConsumer()
@@ -51,7 +53,10 @@ object KafkaTopicObservable {
 
     def pollRecord(timeoutInMs: Long): Option[KafkaRecord] = {
       if (recordsQueue.isEmpty) {
-        flushOffsets()
+
+        if(commitIntervalMs.forall(lastCommitedAt.get + _ < System.currentTimeMillis))
+          flushOffsets()
+
         val records = consumer.poll(timeoutInMs).asScala.map(r => new KafkaRecord(r, offsetMap)).toSeq
         logger.debug(s"Received ${records.size} records from Kafka topic $topic")
         recordsQueue.enqueue(records: _*)
@@ -80,6 +85,7 @@ object KafkaTopicObservable {
         try {
           consumer.commitSync(offsets.asJava)
           logger.debug(s"Committed ${offsets.size} offsets to Kafka topic $topic")
+          lastCommitedAt.set(System.currentTimeMillis)
         } catch {
           case e: CommitFailedException =>
             // we ignore commit failures and proceed further
@@ -104,6 +110,6 @@ object KafkaTopicObservable {
   }
 
   def apply(topic: String, createConsumer: () => KafkaConsumer[String, String],
-            resetOffsets: Boolean = false): Observable[KafkaRecord] =
-    rx.lang.scala.JavaConversions.toScalaObservable(rx.Observable.create(new KafkaTopicSyncOnSubscribe(topic, createConsumer)))
+            commitIntervalMs:Option[Int] = None, resetOffsets: Boolean = false): Observable[KafkaRecord] =
+    rx.lang.scala.JavaConversions.toScalaObservable(rx.Observable.create(new KafkaTopicSyncOnSubscribe(topic, createConsumer, commitIntervalMs, resetOffsets)))
 }
