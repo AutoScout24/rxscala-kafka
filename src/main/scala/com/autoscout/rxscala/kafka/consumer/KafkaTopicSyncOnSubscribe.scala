@@ -11,6 +11,7 @@ import scala.util.control.NonFatal
 
 class KafkaTopicSyncOnSubscribe(topic: String,
                                 createConsumer: () => KafkaConsumer[String, String],
+                                commitIntervalMs:Option[Int] = None,
                                 resetOffsets: Boolean = false)
   extends SyncOnSubscribe[KafkaTopicObservableState, KafkaRecord] with LazyLogging {
   val minuteInMillis = 60000
@@ -18,7 +19,7 @@ class KafkaTopicSyncOnSubscribe(topic: String,
   override def generateState(): KafkaTopicObservableState = {
     logger.info(KafkaConsumerStarted(topic))
 
-    val state = new KafkaTopicObservableState(topic, createConsumer)
+    val state = new KafkaTopicObservableState(topic, createConsumer, commitIntervalMs)
     if (resetOffsets)
       state.resetConsumerOffsets()
     state
