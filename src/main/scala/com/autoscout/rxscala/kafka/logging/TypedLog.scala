@@ -37,12 +37,12 @@ object TypedLog {
     override val message: String = s"Kafka consumer stopped for the topic $topic"
   }
 
-  case class KafkaPartitionsAssigned(topic: String) extends TypedLog {
-    override val message: String = s"Kafka partitions assigned for the topic $topic"
+  case class KafkaPartitionsAssigned(topic: String, partitions: Seq[Int]) extends TypedLog {
+    override val message: String = s"Kafka partitions assigned for the topic $topic: $partitions"
   }
 
-  case class KafkaPartitionsRevoked(topic: String) extends TypedLog {
-    override val message: String = s"Kafka partitions revoked for the topic $topic"
+  case class KafkaPartitionsRevoked(topic: String, partitions: Seq[Int]) extends TypedLog {
+    override val message: String = s"Kafka partitions revoked for the topic $topic: $partitions"
   }
 
   case class OffsetCommitFailed(topic: String, e: Throwable) extends TypedLog {

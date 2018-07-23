@@ -100,11 +100,11 @@ object KafkaTopicObservable {
     }
 
     override def onPartitionsAssigned(partitions: util.Collection[TopicPartition]): Unit = {
-      logger.info(KafkaPartitionsAssigned(topic))
+      logger.info(KafkaPartitionsAssigned(topic, partitions.asScala.map(_.partition()).toSeq))
     }
 
     override def onPartitionsRevoked(partitions: util.Collection[TopicPartition]): Unit = {
-      logger.info(KafkaPartitionsRevoked(topic))
+      logger.info(KafkaPartitionsRevoked(topic, partitions.asScala.map(_.partition()).toSeq))
       flushOffsets()
     }
   }
